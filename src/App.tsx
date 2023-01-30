@@ -26,20 +26,33 @@ export default function App() {
   //   return <li key={book.id}>{book.title}</li>;
   // }
 
-  function onClick(event: React.MouseEvent<HTMLButtonElement>) {
-    setBooks([]);
+  function onClick(bookId: number) {
+    // Using functional form of setState to avoid stale state
+    // React guarantees that currentBooks will be up to date.
+    setBooks((currentBooks) =>
+      currentBooks.filter((book) => book.id !== bookId)
+    );
+  }
+
+  function renderBooks() {
+    if (books.length === 0) return <p>No books found.</p>;
+
+    return (
+      <ul>
+        {books.map((book) => (
+          <li key={book.id}>
+            <button onClick={() => onClick(book.id)}>Delete</button>{" "}
+            {book.title}
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   return (
     <>
       <h1>Books</h1>
-      <ul>
-        {books.map((book) => (
-          <li key={book.id}>
-            <button onClick={onClick}>Delete</button> {book.title}
-          </li>
-        ))}
-      </ul>
+      {renderBooks()}
     </>
   );
 }
