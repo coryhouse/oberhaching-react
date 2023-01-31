@@ -26,7 +26,7 @@ const newBook: NewBook = {
   subject: "",
 };
 
-export default function App() {
+export default function Books() {
   const [books, setBooks] = useState(initialBooks);
   const [book, setBook] = useState(newBook);
 
