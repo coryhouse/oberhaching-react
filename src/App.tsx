@@ -76,6 +76,7 @@ export default function App() {
           <label htmlFor="subject">Subject</label>
           <input type="text" id="subject" />
         </div>
+        <button type="submit">Add Book</button>
       </form>
       {renderBooks()}
     </>
