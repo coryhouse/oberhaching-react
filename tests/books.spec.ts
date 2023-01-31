@@ -4,7 +4,11 @@ test("should display books, and support adding and deleting a book", async ({
   page,
 }) => {
   await page.goto("http://localhost:5173");
-  await expect(page.getByText("Essentialism")).toHaveCount(1);
+
+  // Store a locator for reuse
+  const book1 = page.getByText("Essentialism");
+
+  await expect(book1).toHaveCount(1);
   await expect(page.getByText("The 4-Hour Workweek")).toHaveCount(1);
 
   // Test adding a new book
@@ -24,5 +28,5 @@ test("should display books, and support adding and deleting a book", async ({
   await expect(page.getByLabel("Subject")).toHaveValue("");
 
   await page.getByRole("button", { name: "Delete Essentialism" }).click();
-  await expect(page.getByText("Essentialism")).toHaveCount(0);
+  await expect(book1).toHaveCount(0);
 });
