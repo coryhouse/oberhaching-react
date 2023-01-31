@@ -1,26 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { z } from "zod";
 import About from "./About";
 import Books from "./Books";
 import ManageBook from "./ManageBook";
 import PageNotFound from "./PageNotFound";
 import { Book } from "./types/Book.types";
 
-let initialBooks: Book[] = [
-  {
-    id: 1,
-    title: "Essentialism",
-    subject: "Productivity",
-  },
-  {
-    id: 2,
-    title: "The 4-Hour Workweek",
-    subject: "Productivity",
-  },
-];
+const bookSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  subject: z.string(),
+});
 
 export default function App() {
-  const [books, setBooks] = useState(initialBooks);
+  const [books, setBooks] = useState<Book[]>([]);
+
+  useEffect(() => {
+    async function fetchBooks() {
+      const resp = await fetch("http://localhost:3001/books");
+      if (!resp.ok) throw resp;
+      const bookJson = await resp.json();
+
+      // This throws an error if the JSON returned doesn't match our schema
+      try {
+        bookJson.map((book: any) => bookSchema.parse(book));
+      } catch (error) {
+        alert("Error parsing JSON: " + error);
+      }
+      setBooks(bookJson);
+    }
+    fetchBooks();
+  }, []);
 
   return (
     <React.StrictMode>

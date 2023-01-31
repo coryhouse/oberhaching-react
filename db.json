@@ -1,0 +1,14 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "Essentialism",
+      "subject": "Productivity"
+    },
+    {
+      "id": 2,
+      "title": "The 4-Hour Workweek",
+      "subject": "Productivity"
+    }
+  ]
+}

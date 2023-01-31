@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "run-p start:api dev",
     "dev": "vite",
+    "start:api": "json-server --watch db.json --port 3001",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -14,9 +16,13 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
+    "cross-env": "^7.0.3",
+    "json-server": "^0.17.1",
+    "npm-run-all": "^4.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.0"
+    "react-router-dom": "^6.8.0",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.30.0",
