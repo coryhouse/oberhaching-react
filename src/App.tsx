@@ -63,18 +63,45 @@ export default function App() {
     );
   }
 
+  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); // Prevent page reload.
+    setBooks([
+      ...books,
+      // HACK: This is not a good way to generate a unique id
+      { title: book.title, subject: book.subject, id: books.length + 1 },
+    ]);
+  }
+
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setBook((currentBook) => ({
+      ...currentBook,
+      // Computed property name using the input's id.
+      [event.target.id]: event.target.value,
+    }));
+  }
+
   return (
     <>
       <h1>Books</h1>
-      <form>
+      <form onSubmit={onSubmit}>
         <div>
           <label htmlFor="title">Title</label>
-          <input type="text" id="title" />
+          <input
+            type="text"
+            id="title"
+            onChange={onChange}
+            value={book.title}
+          />
         </div>
 
         <div>
           <label htmlFor="subject">Subject</label>
-          <input type="text" id="subject" />
+          <input
+            type="text"
+            id="subject"
+            onChange={onChange}
+            value={book.subject}
+          />
         </div>
         <button type="submit">Add Book</button>
       </form>
