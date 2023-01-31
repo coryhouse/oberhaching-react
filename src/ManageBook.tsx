@@ -1,3 +1,4 @@
+import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { Book, NewBook } from "./types/Book.types";
 
@@ -35,21 +36,28 @@ export default function ManageBook({ books, setBooks }: ManageBookProps) {
 
   return (
     <form onSubmit={onSubmit}>
-      <div>
-        <label htmlFor="title">Title</label>
-        <input type="text" id="title" onChange={onChange} value={book.title} />
-      </div>
-
-      <div>
-        <label htmlFor="subject">Subject</label>
-        <input
-          type="text"
-          id="subject"
+      <Box>
+        <TextField
+          id="title"
+          label="Title"
+          value={book.title}
+          margin="normal"
           onChange={onChange}
-          value={book.subject}
         />
-      </div>
-      <button type="submit">Add Book</button>
+      </Box>
+
+      <Box>
+        <TextField
+          id="subject"
+          label="Subject"
+          value={book.subject}
+          margin="normal"
+          onChange={onChange}
+        />
+      </Box>
+      <Button type="submit" variant="contained">
+        Add Book
+      </Button>
     </form>
   );
 }
