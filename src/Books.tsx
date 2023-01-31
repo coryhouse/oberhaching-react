@@ -1,35 +1,11 @@
-import { useState } from "react";
+import { Book } from "./types/Book.types";
 
-interface Book {
-  id: number;
-  title: string;
-  subject: string;
-}
-
-type NewBook = Omit<Book, "id">;
-
-let initialBooks: Book[] = [
-  {
-    id: 1,
-    title: "Essentialism",
-    subject: "Productivity",
-  },
-  {
-    id: 2,
-    title: "The 4-Hour Workweek",
-    subject: "Productivity",
-  },
-];
-
-const newBook: NewBook = {
-  title: "",
-  subject: "",
+type BookProps = {
+  books: Book[];
+  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
 };
 
-export default function Books() {
-  const [books, setBooks] = useState(initialBooks);
-  const [book, setBook] = useState(newBook);
-
+export default function Books({ books, setBooks }: BookProps) {
   // Keeping here for reference
   // function renderBook(book: Book) {
   //   return <li key={book.id}>{book.title}</li>;
@@ -63,50 +39,9 @@ export default function Books() {
     );
   }
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault(); // Prevent page reload.
-    setBooks([
-      ...books,
-      // HACK: This is not a good way to generate a unique id
-      { title: book.title, subject: book.subject, id: books.length + 1 },
-    ]);
-    // Reset form after submit
-    setBook(newBook);
-  }
-
-  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setBook((currentBook) => ({
-      ...currentBook,
-      // Computed property name using the input's id.
-      [event.target.id]: event.target.value,
-    }));
-  }
-
   return (
     <>
       <h1>Books</h1>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            onChange={onChange}
-            value={book.title}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="subject">Subject</label>
-          <input
-            type="text"
-            id="subject"
-            onChange={onChange}
-            value={book.subject}
-          />
-        </div>
-        <button type="submit">Add Book</button>
-      </form>
       {renderBooks()}
     </>
   );
