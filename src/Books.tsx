@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Book } from "./types/Book.types";
 
 type BookProps = {
@@ -42,6 +43,7 @@ export default function Books({ books, setBooks }: BookProps) {
   return (
     <>
       <h1>Books</h1>
+      <Link to="/book">Add Book</Link>
       {renderBooks()}
     </>
   );

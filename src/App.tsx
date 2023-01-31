@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import About from "./About";
 import Books from "./Books";
+import ManageBook from "./ManageBook";
 import PageNotFound from "./PageNotFound";
 import { Book } from "./types/Book.types";
 
@@ -42,6 +43,10 @@ export default function App() {
             <Route
               path="/"
               element={<Books books={books} setBooks={setBooks} />}
+            />
+            <Route
+              path="/book"
+              element={<ManageBook books={books} setBooks={setBooks} />}
             />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<PageNotFound />} />
