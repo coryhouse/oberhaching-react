@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Book } from "./types/Book.types";
 
@@ -27,12 +28,13 @@ export default function Books({ books, setBooks }: BookProps) {
       <ul>
         {books.map((book) => (
           <li key={book.id}>
-            <button
+            <Button
+              variant="text"
               aria-label={"Delete " + book.title}
               onClick={() => onClick(book.id)}
             >
               Delete
-            </button>{" "}
+            </Button>{" "}
             {book.title}
           </li>
         ))}
