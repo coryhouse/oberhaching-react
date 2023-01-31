@@ -19,6 +19,10 @@ test("should display books, and support adding and deleting a book", async ({
     page.getByText("The 7 Habits of Highly Effective People")
   ).toHaveCount(1);
 
+  // and the form should now be empty
+  await expect(page.getByLabel("Title")).toHaveValue("");
+  await expect(page.getByLabel("Subject")).toHaveValue("");
+
   await page.getByRole("button", { name: "Delete Essentialism" }).click();
   await expect(page.getByText("Essentialism")).toHaveCount(0);
 });

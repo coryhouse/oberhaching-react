@@ -70,6 +70,8 @@ export default function App() {
       // HACK: This is not a good way to generate a unique id
       { title: book.title, subject: book.subject, id: books.length + 1 },
     ]);
+    // Reset form after submit
+    setBook(newBook);
   }
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
