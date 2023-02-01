@@ -15,7 +15,7 @@ export default function App() {
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const resp = await fetch("http://localhost:3001/books");
+        const resp = await fetch(import.meta.env.VITE_API_BASE_URL + "/books");
         if (!resp.ok) throw resp;
         const bookJson = await resp.json();
         // This throws an error if the JSON returned doesn't match our schema
