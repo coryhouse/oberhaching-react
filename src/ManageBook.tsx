@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addBook } from "./services/books.service";
@@ -16,6 +16,7 @@ type ManageBookProps = {
 
 export default function ManageBook({ books, setBooks }: ManageBookProps) {
   const [book, setBook] = useState(newBook);
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -28,7 +29,9 @@ export default function ManageBook({ books, setBooks }: ManageBookProps) {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // Prevent page reload.
+    setIsSaving(true);
     const savedBook = await addBook(book);
+    setIsSaving(false);
     setBooks([...books, savedBook]);
     navigate("/");
   }
@@ -54,9 +57,15 @@ export default function ManageBook({ books, setBooks }: ManageBookProps) {
           onChange={onChange}
         />
       </Box>
-      <Button type="submit" variant="contained">
-        Add Book
+      <Button type="submit" variant="contained" disabled={isSaving}>
+        {isSaving ? "Saving..." : "Add Book"}
       </Button>
+
+      {isSaving && (
+        <Box>
+          <CircularProgress aria-label="Saving" />
+        </Box>
+      )}
     </form>
   );
 }
