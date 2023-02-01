@@ -1,3 +1,4 @@
+import { SnackbarProvider } from "notistack";
 import ReactDOM from "react-dom/client";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import App from "./App";
@@ -15,6 +16,8 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <ErrorBoundary FallbackComponent={ErrorFallback}>
-    <App />
+    <SnackbarProvider>
+      <App />
+    </SnackbarProvider>
   </ErrorBoundary>
 );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { StrictMode, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import About from "./About";
@@ -38,7 +38,7 @@ export default function App() {
   if (error) throw error;
 
   return (
-    <React.StrictMode>
+    <StrictMode>
       <BrowserRouter>
         <header>
           <nav>
@@ -76,6 +76,6 @@ export default function App() {
           </Routes>
         </main>
       </BrowserRouter>
-    </React.StrictMode>
+    </StrictMode>
   );
 }

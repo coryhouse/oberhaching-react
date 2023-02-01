@@ -1,4 +1,5 @@
 import { Box, Button, CircularProgress } from "@mui/material";
+import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
 import { deleteBook } from "./services/books.service";
 import { Book } from "./types/Book.types";
@@ -10,6 +11,8 @@ type BookProps = {
 };
 
 export default function Books({ books, setBooks, isLoading }: BookProps) {
+  const { enqueueSnackbar } = useSnackbar();
+
   // Keeping here for reference
   // function renderBook(book: Book) {
   //   return <li key={book.id}>{book.title}</li>;
@@ -23,6 +26,7 @@ export default function Books({ books, setBooks, isLoading }: BookProps) {
     setBooks((currentBooks) =>
       currentBooks.filter((book) => book.id !== bookId)
     );
+    enqueueSnackbar("Book deleted", { variant: "success" });
   }
 
   function renderBooks() {
