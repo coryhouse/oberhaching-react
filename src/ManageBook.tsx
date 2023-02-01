@@ -1,5 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { addBook } from "./services/books.service";
 import { Book, NewBook } from "./types/Book.types";
 
 const newBook: NewBook = {
@@ -14,6 +16,7 @@ type ManageBookProps = {
 
 export default function ManageBook({ books, setBooks }: ManageBookProps) {
   const [book, setBook] = useState(newBook);
+  const navigate = useNavigate();
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setBook((currentBook) => ({
@@ -23,15 +26,11 @@ export default function ManageBook({ books, setBooks }: ManageBookProps) {
     }));
   }
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // Prevent page reload.
-    setBooks([
-      ...books,
-      // HACK: This is not a good way to generate a unique id
-      { title: book.title, subject: book.subject, id: books.length + 1 },
-    ]);
-    // Reset form after submit
-    setBook(newBook);
+    const savedBook = await addBook(book);
+    setBooks([...books, savedBook]);
+    navigate("/");
   }
 
   return (
