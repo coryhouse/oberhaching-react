@@ -8,6 +8,11 @@ test("should display books, and support adding and deleting a book", async ({
   // Store a locator for reuse
   const book1 = page.getByText("Essentialism");
   const newBookTitle = "New Book";
+  const spinner = page.getByRole("progressbar", { name: "Loading books" });
+
+  // Spinner should initially display, then hide
+  await expect(spinner).toHaveCount(1);
+  await expect(spinner).toHaveCount(0);
 
   await expect(book1).toHaveCount(1);
   await expect(page.getByText("The 4-Hour Workweek")).toHaveCount(1);

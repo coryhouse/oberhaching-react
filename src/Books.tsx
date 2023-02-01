@@ -29,7 +29,7 @@ export default function Books({ books, setBooks, isLoading }: BookProps) {
     if (isLoading)
       return (
         <Box>
-          <CircularProgress />
+          <CircularProgress aria-label="Loading books" />
         </Box>
       );
 
