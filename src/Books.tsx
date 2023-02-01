@@ -1,19 +1,23 @@
-import { Button } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
+import { deleteBook } from "./services/books.service";
 import { Book } from "./types/Book.types";
 
 type BookProps = {
   books: Book[];
   setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
+  isLoading: boolean;
 };
 
-export default function Books({ books, setBooks }: BookProps) {
+export default function Books({ books, setBooks, isLoading }: BookProps) {
   // Keeping here for reference
   // function renderBook(book: Book) {
   //   return <li key={book.id}>{book.title}</li>;
   // }
 
   function onClick(bookId: number) {
+    // Optimistic delete. TODO: handle errors
+    deleteBook(bookId);
     // Using functional form of setState to avoid stale state
     // React guarantees that currentBooks will be up to date.
     setBooks((currentBooks) =>
@@ -22,6 +26,13 @@ export default function Books({ books, setBooks }: BookProps) {
   }
 
   function renderBooks() {
+    if (isLoading)
+      return (
+        <Box>
+          <CircularProgress />
+        </Box>
+      );
+
     if (books.length === 0) return <p>No books found.</p>;
 
     return (

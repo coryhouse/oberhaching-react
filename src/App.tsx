@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { z } from "zod";
 import About from "./About";
 import Books from "./Books";
 import ManageBook from "./ManageBook";
@@ -9,6 +8,7 @@ import { Book, bookSchema } from "./types/Book.types";
 
 export default function App() {
   const [books, setBooks] = useState<Book[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchBooks() {
@@ -22,6 +22,7 @@ export default function App() {
       } catch (error) {
         alert("Error parsing JSON: " + error);
       }
+      setIsLoading(false);
       setBooks(bookJson);
     }
     fetchBooks();
@@ -47,7 +48,13 @@ export default function App() {
           <Routes>
             <Route
               path="/"
-              element={<Books books={books} setBooks={setBooks} />}
+              element={
+                <Books
+                  books={books}
+                  setBooks={setBooks}
+                  isLoading={isLoading}
+                />
+              }
             />
             <Route
               path="/book"
