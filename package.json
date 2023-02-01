@@ -6,7 +6,7 @@
   "scripts": {
     "start": "run-p start:api dev",
     "dev": "vite",
-    "start:api": "json-server --watch db.json --port 3001",
+    "start:api": "json-server --watch db.json --port 3001 --delay 2000",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -18,6 +18,7 @@
     "@mui/material": "^5.11.7",
     "cross-env": "^7.0.3",
     "json-server": "^0.17.1",
+    "ky": "^0.33.2",
     "npm-run-all": "^4.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
