@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import About from "./About";
 import Books from "./Books";
@@ -49,11 +50,13 @@ export default function App() {
             <Route
               path="/"
               element={
-                <Books
-                  books={books}
-                  setBooks={setBooks}
-                  isLoading={isLoading}
-                />
+                <ErrorBoundary fallback={<p>Books failed. :(</p>}>
+                  <Books
+                    books={books}
+                    setBooks={setBooks}
+                    isLoading={isLoading}
+                  />
+                </ErrorBoundary>
               }
             />
             <Route
