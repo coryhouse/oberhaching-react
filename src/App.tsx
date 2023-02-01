@@ -10,24 +10,32 @@ import { Book, bookSchema } from "./types/Book.types";
 export default function App() {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     async function fetchBooks() {
-      const resp = await fetch("http://localhost:3001/books");
-      if (!resp.ok) throw resp;
-      const bookJson = await resp.json();
-
-      // This throws an error if the JSON returned doesn't match our schema
       try {
-        bookJson.map((book: any) => bookSchema.parse(book));
+        const resp = await fetch("http://localhost:3001/books");
+        if (!resp.ok) throw resp;
+        const bookJson = await resp.json();
+        // This throws an error if the JSON returned doesn't match our schema
+        try {
+          bookJson.map((book: any) => bookSchema.parse(book));
+        } catch (error) {
+          alert("Error parsing JSON: " + error);
+        }
+        setIsLoading(false);
+        setBooks(bookJson);
       } catch (error) {
-        alert("Error parsing JSON: " + error);
+        // TODO: Inspect the error to see if it's a genuine JS error object.
+        setError(error as Error);
+        return;
       }
-      setIsLoading(false);
-      setBooks(bookJson);
     }
     fetchBooks();
   }, []);
+
+  if (error) throw error;
 
   return (
     <React.StrictMode>
