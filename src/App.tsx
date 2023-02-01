@@ -5,13 +5,7 @@ import About from "./About";
 import Books from "./Books";
 import ManageBook from "./ManageBook";
 import PageNotFound from "./PageNotFound";
-import { Book } from "./types/Book.types";
-
-const bookSchema = z.object({
-  id: z.number(),
-  title: z.string(),
-  subject: z.string(),
-});
+import { Book, bookSchema } from "./types/Book.types";
 
 export default function App() {
   const [books, setBooks] = useState<Book[]>([]);
