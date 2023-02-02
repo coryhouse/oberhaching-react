@@ -9,10 +9,28 @@ const newBook: NewBook = {
   subject: "",
 };
 
+type Errors = Partial<NewBook>;
+
+// Union type
+type Status = "idle" | "submitting" | "submitted";
+
 export default function ManageBook() {
   const [book, setBook] = useState(newBook);
-  const [isSaving, setIsSaving] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
   const navigate = useNavigate();
+
+  const errors = getErrors();
+
+  function getErrors() {
+    const errors: Errors = {};
+    if (!book.title) {
+      errors.title = "Title is required.";
+    }
+    if (!book.subject) {
+      errors.subject = "Subject is required.";
+    }
+    return errors;
+  }
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setBook((currentBook) => ({
@@ -24,9 +42,13 @@ export default function ManageBook() {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // Prevent page reload.
-    setIsSaving(true);
+    const errorsExist = Object.keys(errors).length > 0; // If the errors object has any properties, then there are errors.
+    if (errorsExist) {
+      setStatus("submitted");
+      return;
+    }
+    setStatus("submitting");
     const savedBook = await addBook(book);
-    setIsSaving(false);
     navigate("/");
   }
 
@@ -39,6 +61,8 @@ export default function ManageBook() {
           value={book.title}
           margin="normal"
           onChange={onChange}
+          error={status === "submitted" && Boolean(errors.title)}
+          helperText={status === "submitted" && errors.title}
         />
       </Box>
 
@@ -51,11 +75,15 @@ export default function ManageBook() {
           onChange={onChange}
         />
       </Box>
-      <Button type="submit" variant="contained" disabled={isSaving}>
-        {isSaving ? "Saving..." : "Add Book"}
+      <Button
+        type="submit"
+        variant="contained"
+        disabled={status === "submitting"}
+      >
+        {status === "submitting" ? "Saving..." : "Add Book"}
       </Button>
 
-      {isSaving && (
+      {status === "submitting" && (
         <Box>
           <CircularProgress aria-label="Saving" />
         </Box>
