@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SnackbarProvider } from "notistack";
 import ReactDOM from "react-dom/client";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
@@ -20,6 +21,7 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <ErrorBoundary FallbackComponent={ErrorFallback}>
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
       <SnackbarProvider>
         <App />
       </SnackbarProvider>
