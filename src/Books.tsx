@@ -1,4 +1,5 @@
 import { Box, Button, CircularProgress } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
 import { useBooks } from "./hooks/useBooks";
@@ -6,6 +7,15 @@ import { deleteBook } from "./services/books.service";
 
 export default function Books() {
   const bookQuery = useBooks();
+  const queryClient = useQueryClient();
+  const deleteBookMutation = useMutation({
+    mutationFn: deleteBook,
+    onSuccess: () => {
+      // Refetch books after delete
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+      enqueueSnackbar("Book deleted", { variant: "success" });
+    },
+  });
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -16,13 +26,12 @@ export default function Books() {
 
   function onClick(bookId: number) {
     // Optimistic delete. TODO: handle errors
-    deleteBook(bookId);
+    deleteBookMutation.mutate(bookId);
     // Using functional form of setState to avoid stale state
     // React guarantees that currentBooks will be up to date.
     // setBooks((currentBooks) =>
     //   currentBooks.filter((book) => book.id !== bookId)
     // );
-    enqueueSnackbar("Book deleted", { variant: "success" });
   }
 
   function renderBooks() {
