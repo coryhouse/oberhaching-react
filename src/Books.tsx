@@ -1,16 +1,12 @@
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
+import { useBooks } from "./hooks/useBooks";
 import { deleteBook } from "./services/books.service";
-import { Book } from "./types/Book.types";
 
-type BookProps = {
-  books: Book[];
-  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
-  isLoading: boolean;
-};
+export default function Books() {
+  const bookQuery = useBooks();
 
-export default function Books({ books, setBooks, isLoading }: BookProps) {
   const { enqueueSnackbar } = useSnackbar();
 
   // Keeping here for reference
@@ -23,25 +19,27 @@ export default function Books({ books, setBooks, isLoading }: BookProps) {
     deleteBook(bookId);
     // Using functional form of setState to avoid stale state
     // React guarantees that currentBooks will be up to date.
-    setBooks((currentBooks) =>
-      currentBooks.filter((book) => book.id !== bookId)
-    );
+    // setBooks((currentBooks) =>
+    //   currentBooks.filter((book) => book.id !== bookId)
+    // );
     enqueueSnackbar("Book deleted", { variant: "success" });
   }
 
   function renderBooks() {
-    if (isLoading)
+    // Type narrowing - Note that bookQuery.data is always defined below.
+    if (bookQuery.isLoading || bookQuery.data === undefined) {
       return (
         <Box>
           <CircularProgress aria-label="Loading books" />
         </Box>
       );
+    }
 
-    if (books.length === 0) return <p>No books found.</p>;
+    if (bookQuery.data.length === 0) return <p>No books found.</p>;
 
     return (
       <ul>
-        {books.map((book) => (
+        {bookQuery.data.map((book) => (
           <li key={book.id}>
             <Button
               variant="text"
@@ -62,6 +60,12 @@ export default function Books({ books, setBooks, isLoading }: BookProps) {
       <h1>Books</h1>
       <Link to="/book">Add Book</Link>
       {renderBooks()}
+      {bookQuery.isRefetching && (
+        <p>
+          Refetching...
+          <CircularProgress />
+        </p>
+      )}
     </>
   );
 }

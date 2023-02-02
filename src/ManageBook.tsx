@@ -2,19 +2,14 @@ import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addBook } from "./services/books.service";
-import { Book, NewBook } from "./types/Book.types";
+import { NewBook } from "./types/Book.types";
 
 const newBook: NewBook = {
   title: "",
   subject: "",
 };
 
-type ManageBookProps = {
-  books: Book[];
-  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
-};
-
-export default function ManageBook({ books, setBooks }: ManageBookProps) {
+export default function ManageBook() {
   const [book, setBook] = useState(newBook);
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +27,6 @@ export default function ManageBook({ books, setBooks }: ManageBookProps) {
     setIsSaving(true);
     const savedBook = await addBook(book);
     setIsSaving(false);
-    setBooks([...books, savedBook]);
     navigate("/");
   }
 
