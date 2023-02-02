@@ -1,10 +1,11 @@
-import { StrictMode } from "react";
+import { lazy, StrictMode, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import About from "./About";
 import Books from "./Books";
 import ManageBook from "./ManageBook";
 import PageNotFound from "./PageNotFound";
+
+const About = lazy(() => import("./About"));
 
 export default function App() {
   return (
@@ -34,7 +35,14 @@ export default function App() {
               }
             />
             <Route path="/book" element={<ManageBook />} />
-            <Route path="/about" element={<About />} />
+            <Route
+              path="/about"
+              element={
+                <Suspense fallback={<p>Loading about...</p>}>
+                  <About />
+                </Suspense>
+              }
+            />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </main>
